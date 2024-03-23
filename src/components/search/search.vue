@@ -5,15 +5,15 @@
     </div>
     <v-btn id="SearchBt" v-on:click="SearchMovies()">Suchen <svg-icon type="mdi" :path="path2"></svg-icon>
     </v-btn>
-    <div>
+    <div class="table-div" id="table-div">
         <table>
             <tr>
                 <th>
                     Poster
                 </th>
-                <th>Title</th>
-                <th>Jahr</th>
-                <th>Zu Favoriten hinzufügen</th>
+                <th>Titel</th>
+                <th>Erscheinungsjahr</th>
+                <th>Zu Favoriten hinzufügen:</th>
 
 
             </tr>
@@ -66,6 +66,8 @@ export default {
 
         SearchMovies() {
             this.data.length = 0
+            document.getElementById("table-div").style.visibility = "hidden"
+
             if (this.title == null && this.year == null) {
                 alert("Geben Sie erst einen Titel oder ein Jahr ein.")
                 return
@@ -111,12 +113,21 @@ export default {
             axios.get(url).then(
                 response => {
                     let dt = response.data.Search
-                    for (let i = 0; i < dt.length; i++) {
-                        this.data.push(dt[i])
+                    if (dt != undefined) {
+                        for (let i = 0; i < dt.length; i++) {
+                            this.data.push(dt[i])
+                        }
                     }
+                    
+                    if (this.data.length != 0) {
+                        document.getElementById("table-div").style.visibility = "visible"
+                        return
+                    }
+                    alert("Keine Ergebnisse!")
+
                 }
             )
-            console.log(this.data)
+            console.log(this.data.length)
         },
         addToFavorites(ID) {
             console.log(ID)
@@ -124,7 +135,7 @@ export default {
                 imdbID: ID
             }
             for (let i = 0; i < this.favoritemovies.length; i++) {
-                if (MovieData.imdbID == this.favoritemovies[i].imdbID){
+                if (MovieData.imdbID == this.favoritemovies[i].imdbID) {
                     alert("Film ist bereits als Favorit markiert!")
                     return
                 }
@@ -149,16 +160,28 @@ export default {
 
 </script>
 <style scoped>
+.table-div {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    visibility: hidden;
+}
+
 img {
     max-height: 150px;
 }
 
 table {
-    min-width: 90%;
+    width: 80%;
 }
 
+
 .FavoritesBt {
-    background-color: rgb(247, 121, 121)
+    background-color: rgb(224, 109, 109)
+}
+
+.FavoritesBt:hover {
+    background-color: purple
 }
 
 .v-text-field {
@@ -166,13 +189,17 @@ table {
 
 }
 
-#SearchBt {}
+#SearchBt {
+    background-color: rgb(166, 11, 11);
+    color: white;
+
+}
 
 .text-field-container {
     display: flex;
     margin-right: 20px;
     margin-left: 20px;
     justify-content: center;
-    margin-top: 10px;
+    margin-top: 25px;
 }
 </style>

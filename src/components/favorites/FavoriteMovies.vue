@@ -1,44 +1,49 @@
 <template>
     <h1>Meine Lieblingsfilme</h1>
 
-    <div>
-        <table>
-            <tr>
-                <th>
-                    Poster
-                </th>
-                <th>Title</th>
-                <th>Jahr</th>
-                <th>Laufzeit</th>
-                <th>Rating</th>
-                <th>Regisseur</th>
-                <th>Drehbuch</th>
-                <th>Schauspieler</th>
-                <th>Genre</th>
-                <th>Land</th>
-                <th> </th>
-
-            </tr>
-            <tr v-for="x in  data " :key="x">
-                <td><img :src="x.Poster" alt=""></td>
-                <td>{{ x.Title }}</td>
-                <td>{{ x.Year }}</td>
-                <td>{{ x.Runtime }}</td>
-                <td>{{ x.imdbRating }}</td>
-                <td>{{ x.Director }}</td>
-                <td>{{ x.Writer }}</td>
-                <td>{{ x.Actors }}</td>
-                <td>{{ x.Genre }}</td>
-                <td :id="x.imdbID">{{ translateToGerman(x.Country, x.imdbID) }}</td>
-                <td class="lasttd"> <v-btn v-on:click="removeFromFavorites(x.imdbID)" class="deleteBt"> <svg-icon
-                            type="mdi" :path="path"></svg-icon>
+    <div class="div" v-if="this.data.length > 0"> <v-table theme="">
+            <thead>
+                <tr>
+                    <th>
+                        Poster
+                    </th>
+                    <th>Title</th>
+                    <th>Jahr</th>
+                    <th>Laufzeit</th>
+                    <th>Rating</th>
+                    <th>Regisseur</th>
+                    <th>Drehbuch</th>
+                    <th>Schauspieler</th>
+                    <th>Genre</th>
+                    <th>Land</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="x in  data " :key="x">
+                    <td><img :src="x.Poster" alt=""></td>
+                    <td>{{ x.Title }}</td>
+                    <td>{{ x.Year }}</td>
+                    <td>{{ x.Runtime }}</td>
+                    <td>{{ x.imdbRating }}</td>
+                    <td>{{ x.Director }}</td>
+                    <td>{{ x.Writer }}</td>
+                    <td>{{ x.Actors }}</td>
+                    <td>{{ x.Genre }}</td>
+                    <td :id="x.imdbID">{{ translateToGerman(x.Country, x.imdbID) }}</td>
+                    <v-btn v-on:click="removeFromFavorites(x.imdbID)" class="deleteBt">
+                        <h3>X</h3>
 
 
                     </v-btn>
-                </td>
-            </tr>
-        </table>
+                </tr>
+            </tbody>
+        </v-table>
     </div>
+    <div class="v-else" v-else>
+        <h3>Noch keine Lieblingsfilme😔 </h3>
+    </div>
+
+
 
 
 </template>
@@ -46,13 +51,12 @@
 import DataService from '@/DataService';
 import axios from 'axios';
 import { mdiDelete } from '@mdi/js';
-import SvgIcon from '@jamescoyle/vue-icon';
 
 import translate from "translate";
 export default {
     name: "FavoriteMovies",
     components: {
-        SvgIcon
+
     },
 
 
@@ -149,8 +153,19 @@ export default {
 
 </script>
 <style scoped>
+
+.v-else {
+    display: flex;
+    margin-top: 200px;
+
+}
+
+h1{
+    margin-top: 20px;    color: rgb(152, 144, 144);
+
+}
 img {
-    max-height: 150px;
+    max-height: 130px;
 }
 
 td {
@@ -158,13 +173,29 @@ td {
     max-width: 100px;
 }
 
+h3 {
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
 td {
-    border-bottom: 1px solid rgb(125, 123, 123);
+    background-color: rgb(177, 212, 212);
+    border-bottom: 1px solid rgb(203, 199, 199);
 
 }
 
-table {
+.v-table {
     min-width: 70%;
+}
+
+#deleteIcon {
+    color: rgb(220, 107, 107);
+}
+
+tbody {}
+
+thead {
+    background-color: rgb(217, 223, 223)
 }
 
 th {
@@ -172,17 +203,25 @@ th {
     padding-right: 10px;
     margin-left: 10px;
     border-bottom: 1px solid rgb(203, 199, 199);
-
-
 }
 
 .deleteBt {
-    background-color: rgb(195, 103, 103);
+    background-color: rgb(255, 255, 255);
+    min-width: 0px;
+    width: 50px;
+    margin-left: 10px;
+    height: 40px;
+    margin-top: 50px;
+
+}
+
+.deleteBt:hover {
+    background-color: rgb(215, 84, 84);
+
 }
 
 .lasttd {
-    border-right: 1px solid rgb(203, 199, 199);
-
+    border-right: 1px solid rgb(203, 199, 199)
 }
 
 div {
