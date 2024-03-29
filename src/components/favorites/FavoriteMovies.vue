@@ -1,7 +1,7 @@
 <template>
     <h1>Meine Lieblingsfilme</h1>
 
-    <div class="div" v-if="this.data.length > 0"> <v-table theme="">
+    <div class="div" v-if="this.data.length > 0"> <v-table theme="" id="v-table">
             <thead>
                 <tr>
                     <th>
@@ -30,10 +30,8 @@
                     <td>{{ x.Actors }}</td>
                     <td>{{ x.Genre }}</td>
                     <td :id="x.imdbID">{{ translateToGerman(x.Country, x.imdbID) }}</td>
-                    <v-btn v-on:click="removeFromFavorites(x.imdbID)" class="deleteBt">
-                        <h3>X</h3>
-
-
+                    <v-btn v-on:click="removeFromFavorites(x.imdbID)" class="deleteBt" id="deleteBt">
+                        <svg-icon type="mdi" :path="path"></svg-icon>
                     </v-btn>
                 </tr>
             </tbody>
@@ -44,21 +42,22 @@
     </div>
 
 
-
+    <footer>
+        <v-btn v-on:click="edit()"> <svg-icon type="mdi" :path="path2"></svg-icon>
+        </v-btn>
+    </footer>
 
 </template>
 <script>
 import DataService from '@/DataService';
 import axios from 'axios';
-import { mdiDelete } from '@mdi/js';
+import SvgIcon from '@jamescoyle/vue-icon';
+import { mdilDelete } from '@mdi/light-js';
+import { mdilPencil } from '@mdi/light-js';
 
 import translate from "translate";
 export default {
     name: "FavoriteMovies",
-    components: {
-
-    },
-
 
     data() {
         return {
@@ -66,9 +65,15 @@ export default {
             MovieList: [],
             isLoading: false,
             err: "",
-            path: mdiDelete
+            path: mdilDelete,
+            path2: mdilPencil,
+
+
 
         };
+    },
+    components: {
+        SvgIcon
     },
 
     methods: {
@@ -96,6 +101,20 @@ export default {
                 .catch(e => {
                     console.log(e);
                 });
+
+
+        },
+        edit() {
+            for (let i = 0; i < this.data.length; i++) {
+
+                const vtable = document.getElementById("v-table")
+                const deleteBt = document.querySelectorAll("[id='deleteBt']")
+                for (let i = 0; i < deleteBt.length; i++) {
+
+                    deleteBt[i].style.visibility = "visible"
+                }
+                vtable.style.marginRight = "10px"
+            }
 
 
         },
@@ -153,23 +172,23 @@ export default {
 
 </script>
 <style scoped>
-
 .v-else {
     display: flex;
     margin-top: 200px;
 
 }
 
-h1{
-    margin-top: 20px;    color: rgb(152, 144, 144);
+h1 {
+    margin-top: 20px;
+    color: rgb(152, 144, 144);
 
 }
+
 img {
     max-height: 130px;
 }
 
 td {
-    border-left: 1px solid rgb(203, 199, 199);
     max-width: 100px;
 }
 
@@ -179,8 +198,7 @@ h3 {
 }
 
 td {
-    background-color: rgb(177, 212, 212);
-    border-bottom: 1px solid rgb(203, 199, 199);
+    background-color: rgb(244, 207, 207);
 
 }
 
@@ -190,29 +208,26 @@ td {
 
 #deleteIcon {
     color: rgb(220, 107, 107);
+
 }
 
-tbody {}
-
 thead {
-    background-color: rgb(217, 223, 223)
+    background-color: rgb(255, 247, 247)
 }
 
 th {
     padding-left: 10px;
     padding-right: 10px;
     margin-left: 10px;
-    border-bottom: 1px solid rgb(203, 199, 199);
 }
 
 .deleteBt {
-    background-color: rgb(255, 255, 255);
-    min-width: 0px;
-    width: 50px;
+    background-color: rgb(182, 111, 111);
+    margin-top: 40px;
     margin-left: 10px;
-    height: 40px;
-    margin-top: 50px;
-
+    min-width: 0;
+    visibility: hidden;
+    width: 40px;
 }
 
 .deleteBt:hover {
@@ -220,9 +235,6 @@ th {
 
 }
 
-.lasttd {
-    border-right: 1px solid rgb(203, 199, 199)
-}
 
 div {
     display: flex;

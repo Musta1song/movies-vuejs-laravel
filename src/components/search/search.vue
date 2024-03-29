@@ -194,6 +194,9 @@ table {
     color: white;
 
 }
+#SearchBt:hover{
+    background-color: darkred;
+}
 
 .text-field-container {
     display: flex;

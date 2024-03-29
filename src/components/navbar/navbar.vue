@@ -18,7 +18,7 @@ export default {
   background-color: brown;
 }
 .v-btn{
-  
+  margin-top: 100px;
   margin: 5px
 }
 .v-btn:hover{
