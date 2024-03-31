@@ -42,7 +42,7 @@
     </div>
 
 
-    <footer>
+    <footer v-if="this.data.length > 0">
         <v-btn v-on:click="edit()"> <svg-icon type="mdi" :path="path2"></svg-icon>
         </v-btn>
     </footer>
