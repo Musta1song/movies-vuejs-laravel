@@ -1,59 +1,38 @@
 <template>
     <h1>Meine Lieblingsfilme</h1>
+    <div class="flex">
+        <div class="div" v-if="this.data.length > 0"> <v-table theme="" id="v-table">
 
-    <div class="div" v-if="this.data.length > 0"> <v-table theme="" id="v-table">
-            <thead>
-                <tr>
-                    <th>
-                        Poster
-                    </th>
-                    <th>Title</th>
-                    <th>Jahr</th>
-                    <th>Laufzeit</th>
-                    <th>Rating</th>
-                    <th>Regisseur</th>
-                    <th>Drehbuch</th>
-                    <th>Schauspieler</th>
-                    <th>Genre</th>
-                    <th>Land</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="x in  data " :key="x">
-                    <td><img :src="x.Poster" alt=""></td>
-                    <td>{{ x.Title }}</td>
-                    <td>{{ x.Year }}</td>
-                    <td>{{ x.Runtime }}</td>
-                    <td>{{ x.imdbRating }}</td>
-                    <td>{{ x.Director }}</td>
-                    <td>{{ x.Writer }}</td>
-                    <td>{{ x.Actors }}</td>
-                    <td>{{ x.Genre }}</td>
-                    <td :id="x.imdbID">{{ translateToGerman(x.Country, x.imdbID) }}</td>
-                    <v-btn v-on:click="removeFromFavorites(x.imdbID)" class="deleteBt" id="deleteBt">
-                        <svg-icon type="mdi" :path="path"></svg-icon>
-                    </v-btn>
-                </tr>
-            </tbody>
-        </v-table>
+                <tbody>
+                    <tr v-for="x in data " :key="x">
+                        <td><img :src="x.Poster" alt=""></td>
+                        <td>{{ x.Title }}</td>
+                        <td>{{ x.Year }}</td>
+                        <v-btn v-on:click="removeFromFavorites(x.imdbID)" class="deleteBt" id="deleteBt">
+                            <svg-icon type="mdi" :path="path"></svg-icon>
+                        </v-btn>
+                    </tr>
+                </tbody>
+            </v-table>
+        </div>
+        <div class="v-else" v-else>
+            <h3>Noch keine Lieblingsfilme😔 </h3>
+        </div>
+
+
+        <div v-if="this.data.length > 0">
+            <v-btn class="editbt" v-on:click="edit()"> <svg-icon type="mdi" :path="path2"></svg-icon>
+            </v-btn>
+        </div>
     </div>
-    <div class="v-else" v-else>
-        <h3>Noch keine Lieblingsfilme😔 </h3>
-    </div>
-
-
-    <footer v-if="this.data.length > 0">
-        <v-btn v-on:click="edit()"> <svg-icon type="mdi" :path="path2"></svg-icon>
-        </v-btn>
-    </footer>
 
 </template>
 <script>
 import DataService from '@/DataService';
 import axios from 'axios';
 import SvgIcon from '@jamescoyle/vue-icon';
-import { mdilDelete } from '@mdi/light-js';
-import { mdilPencil } from '@mdi/light-js';
+import { mdiClose } from '@mdi/js';
+import { mdiPencil } from '@mdi/js';
 
 import translate from "translate";
 export default {
@@ -65,8 +44,8 @@ export default {
             MovieList: [],
             isLoading: false,
             err: "",
-            path: mdilDelete,
-            path2: mdilPencil,
+            path: mdiClose,
+            path2: mdiPencil,
 
 
 
@@ -107,13 +86,11 @@ export default {
         edit() {
             for (let i = 0; i < this.data.length; i++) {
 
-                const vtable = document.getElementById("v-table")
                 const deleteBt = document.querySelectorAll("[id='deleteBt']")
                 for (let i = 0; i < deleteBt.length; i++) {
 
                     deleteBt[i].style.visibility = "visible"
                 }
-                vtable.style.marginRight = "10px"
             }
 
 
@@ -177,6 +154,9 @@ export default {
     margin-top: 200px;
 
 }
+.v-table{
+    margin-top: 20px;
+}
 
 h1 {
     margin-top: 20px;
@@ -197,15 +177,6 @@ h3 {
     margin-right: 10px;
 }
 
-td {
-    background-color: rgb(244, 207, 207);
-
-}
-
-.v-table {
-    min-width: 70%;
-}
-
 #deleteIcon {
     color: rgb(220, 107, 107);
 
@@ -219,25 +190,29 @@ th {
     padding-left: 10px;
     padding-right: 10px;
     margin-left: 10px;
+    background-color: rgb(244, 207, 207);
+
 }
 
 .deleteBt {
-    background-color: rgb(182, 111, 111);
-    margin-top: 40px;
+    background-color: rgb(246, 107, 107);
+    margin-top: 50px;
     margin-left: 10px;
     min-width: 0;
     visibility: hidden;
-    width: 40px;
+    width: 50px;
+    zoom: 0.8;
 }
-
-.deleteBt:hover {
-    background-color: rgb(215, 84, 84);
-
-}
-
 
 div {
     display: flex;
     justify-content: center;
+}
+
+.editbt {
+    background-color: rgb(224, 236, 242);
+    width: 55px;
+    min-width: 0;
+    
 }
 </style>
